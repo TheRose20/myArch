@@ -1,11 +1,12 @@
 #!/bin/bash
+# Only Efi install
 
 if [ "$(id -u)" -ne 0 ]; then
   echo "Exitst script with sudo!"
   exit 1
 fi
 
-echo "Add password for root (default: password):"
+echo -n "Add password for root (default: password):"
 read -s PASSWORD
 PASSWORD=${PASSWORD:-password}
 
@@ -13,31 +14,17 @@ DISK="/dev/sda"
 HOSTNAME="archlinux"
 USERNAME="user"
 
-BASEPACKAGES_FILE="/mnt/data/packs/base.packs"
-STARTPACKAGES_FILE="/mnt/data/packs/start.packs"
-
-if [[ -f "$BASEPACKAGES_FILE" ]]; then
-  mapfile -t BASEPACKAGES < "$BASEPACKAGES_FILE"
-else
-  echo "Error: file $BASEPACKAGES_FILE not exist."
-  exit 1
-fi
-
-if [[ -f "$STARTPACKAGES_FILE" ]]; then
-  mapfile -t STARTPACKAGES < "$STARTPACKAGES_FILE"
-else
-  echo "Error: file $STARTPACKAGES_FILE not exist."
-  exit 1
-fi
+BASEPACKAGES_FILE="packs/base.packs"
+STARTPACKAGES_FILE="packs/start.packs"
 
 PACMAN_CONF="/etc/pacman.conf"
-PARALLEL_DOWNLOADS=50
+PARALLEL_DOWNLOADS=30
 
-sed -i "s/^#ParallelDownloads = [0-9]*/ParallelDownloads = $PARALLEL_DOWNLOADS/" "$PACMAN_CONF"
+sed -i "s/^#ParallelDownloads = [0-50]*/ParallelDownloads = $PARALLEL_DOWNLOADS/" "$PACMAN_CONF"
 sed -i "s/^#Color/Color/" "$PACMAN_CONF"
 
 if grep -q "^ParallelDownloads = $PARALLEL_DOWNLOADS" "$PACMAN_CONF"; then
-  echo "pacman succes"
+  echo "Pacman edited"
 else
   echo "Error pacman.conf"
   exit 1
@@ -56,7 +43,7 @@ mount "${DISK}2" /mnt
 mkdir -p /mnt/boot
 mount "${DISK}1" /mnt/boot
 
-pacstrap /mnt base linux linux-firmware
+pacstrap /mnt base linux linux-firmware base-devel zsh networkmanager grub efibootmgr
 
 genfstab -U /mnt >> /mnt/etc/fstab
 arch-chroot /mnt bash -c "
@@ -72,21 +59,13 @@ arch-chroot /mnt bash -c "
   echo '$USERNAME:$PASSWORD' | chpasswd
   echo '%wheel ALL=(ALL) ALL' >> /etc/sudoers
 
-  pacman -S --noconfirm grub efibootmgr
   grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
   grub-mkconfig -o /boot/grub/grub.cfg
-
-  echo "Installing base packeges"
-  pacman -S --noconfirm ${BASEPACKAGES[@]}
-
-  echo "Installing start packeges"
-  pacman -S --noconfirm ${STARTPACKAGES[@]}
 
   systemctl enable NetworkManager
 "
 
-umount -R /mnt
-echo "Installation succes! Reboot in 3 sec"
-sleep 3
-reboot
+#umount -R /mnt
+echo "Installation succes!"
 
+arch-chroot /mnt bash
