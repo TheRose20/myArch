@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ "$(id -u)" -ne 0 ]; then
   echo "Exitst script with sudo!"
@@ -13,7 +13,6 @@ while true; do
         break
     else
         echo "Start install start packs"
-		packs_choice="s"
     fi
 done
 
@@ -39,6 +38,30 @@ echo
 
 
 if [["#$packs_choice" == "a"]]; then
-	pacman -S --noconfirm TODO
+	pacman -S --noconfirm $BASEPACKAGES
 else
-	pacman -S --noconfirm TODO a + s
+	pacman -S --noconfirm $BASEPACKAGES
+	pacman -S --noconfirm $STARTPACKAGES
+
+cd
+mkdir programing app picture system
+cd picture
+mkdir wallpaper
+
+cd /home/user/system
+git clone https://git.suckless.org/dwm
+git clone https://github.com/torrinfail/dwmblocks.git
+
+cp config.h /home/user/system/dwm/config.h
+
+cd /home/user/system/dwm
+make
+sudo make install
+
+cp xinitrc /home/user/.xinitrc
+cp startdwm.sh /home/user/.startdwm.sh
+cd /home/user
+chmod +x .startdwm.sh
+
+curl -o wall.jpg https://ic.pics.livejournal.com/pantsu_squad/60334932/1436863/1436863_original.jpg
+

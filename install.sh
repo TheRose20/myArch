@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ "$(id -u)" -ne 0 ]; then
   echo "Please run this script with sudo!"
@@ -30,26 +30,11 @@ fi
 wipefs -a "$DISK"
 sgdisk -Z "$DISK"
 
-echo "Detecting boot mode..."
-if [[ -d /sys/firmware/efi ]]; then
-  echo "EFI mode detected."
-  sgdisk -n 1:0:+500M -t 1:ef00 -c 1:"EFI" "$DISK"
-  sgdisk -n 2:0:0 -t 2:8300 -c 2:"Linux" "$DISK"
+sgdisk -n 0:0:+2MiB -t 0:ef02 -c 0:grub "$DISK"
+sgdisk -n 0:0:0 -t 0:8300 -c 0:Linux "$DISK"
 
-  mkfs.fat -F32 "${DISK}1"
-  mkfs.ext4 "${DISK}2"
-
-  mount "${DISK}2" /mnt
-  mkdir -p /mnt/boot
-  mount "${DISK}1" /mnt/boot
-else
-  echo "BIOS mode detected."
-  sgdisk -n 1:0:0 -t 1:8300 -c 1:"Linux" "$DISK"
-
-  mkfs.ext4 "${DISK}1"
-
-  mount "${DISK}1" /mnt
-fi
+mkfs.ext4 "$DISK2"
+mount "$DISK2" /mnt
 
 pacstrap /mnt base linux linux-firmware base-devel zsh networkmanager grub
 
@@ -68,14 +53,17 @@ arch-chroot /mnt bash -c "
   echo '$USERNAME:$PASSWORD' | chpasswd
   echo '%wheel ALL=(ALL) ALL' >> /etc/sudoers
 
-  if [[ -d /sys/firmware/efi ]]; then
-    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-  else
-    grub-install --target=i386-pc $DISK
-  fi
+  grub-install --target=i386-pc $DISK
 
   grub-mkconfig -o /boot/grub/grub.cfg
   systemctl enable NetworkManager
+"
+
+cp -r internal /mnt/root
+
+arch-chroot /mnt "
+	chmod +x /root/interanl/interanlInstall.sh
+	./root/internal/internalInstall.sh
 "
 
 umount -R /mnt
