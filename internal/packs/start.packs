@@ -1,5 +1,9 @@
 dmenu
 thunar
 flatpak
-xorg
+kitty
+feh
+picom
 xorg-server
+xorg-xinit
+xorg-xrandr

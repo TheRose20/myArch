@@ -11,7 +11,7 @@ read -p "Enter disk to install on (default: /dev/sda): " DISK
 DISK=${DISK:-/dev/sda}
 read -p "Enter hostname (default: archlinux): " HOSTNAME
 HOSTNAME=${HOSTNAME:-archlinux}
-read -p "Enter username (default: user): " USERNAME
+#read -p "Enter username (default: user): " USERNAME
 USERNAME=${USERNAME:-user}
 
 PACMAN_CONF="/etc/pacman.conf"
@@ -36,7 +36,7 @@ sgdisk -n 0:0:0 -t 0:8300 -c 0:Linux "$DISK"
 mkfs.ext4 "${DISK}2"
 mount "${DISK}2" /mnt
 
-pacstrap /mnt base linux linux-firmware base-devel zsh networkmanager grub
+pacstrap /mnt base linux linux-firmware base-devel zsh networkmanager grub > pacstrap.log
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
@@ -59,11 +59,12 @@ arch-chroot /mnt bash -c "
   systemctl enable NetworkManager
 "
 
-cp -r /root/internal /mnt/root
+cp -r /root /mnt/home/user
+cp -r /root /mnt/root
 
 arch-chroot /mnt "
-	chmod +x /root/interanl/interanlInstall.sh
-	./root/internal/internalInstall.sh
+	chmod +x home/user/internal/internalInstall.sh
+	/ ./home/user/internal/internalInstall.sh
 "
 
 #umount -R /mnt

@@ -36,14 +36,13 @@ fi
 echo
 
 
-
 if [["#$packs_choice" == "a"]]; then
 	pacman -S --noconfirm $BASEPACKAGES
 else
 	pacman -S --noconfirm $BASEPACKAGES
 	pacman -S --noconfirm $STARTPACKAGES
 
-cd
+cd /home/user
 mkdir programing app picture system
 cd picture
 mkdir wallpaper
@@ -58,10 +57,13 @@ cd /home/user/system/dwm
 make
 sudo make install
 
-cp xinitrc /home/user/.xinitrc
-cp startdwm.sh /home/user/.startdwm.sh
+cd /home/user/system/dwmblocks
+sudo make
+sudo make install
+
+cp home/user/xinitrc /home/user/.xinitrc
+cp home/user/startdwm.sh /home/user/.startdwm.sh
 cd /home/user
 chmod +x .startdwm.sh
 
-curl -o wall.jpg https://ic.pics.livejournal.com/pantsu_squad/60334932/1436863/1436863_original.jpg
-
+curl -o home/user/picture/wallpaperwall.jpg https://ic.pics.livejournal.com/pantsu_squad/60334932/1436863/1436863_original.jpg
