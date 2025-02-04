@@ -33,8 +33,8 @@ sgdisk -Z "$DISK"
 sgdisk -n 0:0:+2MiB -t 0:ef02 -c 0:grub "$DISK"
 sgdisk -n 0:0:0 -t 0:8300 -c 0:Linux "$DISK"
 
-mkfs.ext4 "$DISK2"
-mount "$DISK2" /mnt
+mkfs.ext4 "${DISK}2"
+mount "${DISK}2" /mnt
 
 pacstrap /mnt base linux linux-firmware base-devel zsh networkmanager grub
 
@@ -59,12 +59,12 @@ arch-chroot /mnt bash -c "
   systemctl enable NetworkManager
 "
 
-cp -r internal /mnt/root
+cp -r /root/internal /mnt/root
 
 arch-chroot /mnt "
 	chmod +x /root/interanl/interanlInstall.sh
 	./root/internal/internalInstall.sh
 "
 
-umount -R /mnt
+#umount -R /mnt
 echo "Installation complete! Reboot to enjoy your new system."
