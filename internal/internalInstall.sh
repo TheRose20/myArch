@@ -59,7 +59,7 @@ cd /home/user/system
 sudo -u $SUDO_USER git clone https://git.suckless.org/dwm
 sudo -u $SUDO_USER git clone https://github.com/torrinfail/dwmblocks.git
 
-sudo -u $SUDO_USER cp /home/user/config.h /home/user/system/dwm/config.h
+sudo -u $SUDO_USER cp /home/user/internal/config.h /home/user/system/dwm/config.h
 
 cd /home/user/system/dwm
 sudo make install
@@ -67,10 +67,10 @@ sudo make install
 cd /home/user/system/dwmblocks
 sudo make install
 
-sudo -u $SUDO_USER cp home/user/internal/xinitrc /home/user/.xinitrc
-sudo -u $SUDO_USER cp home/user/internal/startdwm.sh /home/user/.startdwm.sh
+sudo -u $SUDO_USER cp /home/user/internal/xinitrc /home/user/.xinitrc
+sudo -u $SUDO_USER cp /home/user/internal/startdwm.sh /home/user/.startdwm.sh
 
 cd /home/user
 sudo -u $SUDO_USER chmod +x .startdwm.sh
 
-curl -o home/user/picture/wallpaperwall/wall.jpg https://ic.pics.livejournal.com/pantsu_squad/60334932/1436863/1436863_original.jpg
+curl -o /home/user/picture/wallpaperwall/wall.jpg https://ic.pics.livejournal.com/pantsu_squad/60334932/1436863/1436863_original.jpg

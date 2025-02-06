@@ -36,7 +36,7 @@ sgdisk -n 0:0:0 -t 0:8300 -c 0:Linux "$DISK"
 mkfs.ext4 "${DISK}2"
 mount "${DISK}2" /mnt
 
-pacstrap /mnt base linux linux-firmware base-devel zsh networkmanager grub > pacstrap.log
+pacstrap /mnt base linux linux-firmware base-devel zsh networkmanager grub 
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
