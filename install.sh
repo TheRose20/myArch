@@ -59,13 +59,10 @@ arch-chroot /mnt bash -c "
   systemctl enable NetworkManager
 "
 
-cp -r /root /mnt/home/user
+cp -r /root/internal /mnt/home/user
 cp -r /root /mnt/root
 
-arch-chroot /mnt "
-	chmod +x home/user/internal/internalInstall.sh
-	/ ./home/user/internal/internalInstall.sh
-"
+chmod -R 777 /mnt/home/user/internal
 
 #umount -R /mnt
 echo "Installation complete! Reboot to enjoy your new system."

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ "$(id -u)" -ne 0 ]; then
   echo "Exitst script with sudo!"
@@ -6,64 +6,71 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 while true; do
-    echo -n "Which packs you wanna install (a or s): "
+    echo -n "Which packs you wanna install (a or b): "
     read packs_choice
 
-    if [[ "$packs_choice" == "a" || "$packs_choice" == "s" ]]; then
+    if [[ "$packs_choice" == "a" || "$packs_choice" == "b" ]]; then
         break
     else
-        echo "Start install start packs"
+        echo "Start install packs"
     fi
 done
 
-BASEPACKAGES_FILE="packs/base.packs"
-STARTPACKAGES_FILE="packs/start.packs"
 
-if [[ -f "$BASEPACKAGES_FILE" ]]; then
-  mapfile -t BASEPACKAGES < "$BASEPACKAGES_FILE"
-else
-  echo "Error: file $BASEPACKAGES_FILE not exist."
-  exit 1
-fi
 
-if [[ -f "$STARTPACKAGES_FILE" ]]; then
-  mapfile -t STARTPACKAGES < "$STARTPACKAGES_FILE"
-else
-  echo "Error: file $STARTPACKAGES_FILE not exist."
-  exit 1
-fi
+PARALLER_COUNT=6
 
-echo
+install_packages() {
+    local file=$1
+    if [[ ! -f "$file" ]]; then
+        echo "Файл $file не найден!"
+        exit 1
+    fi
 
+    packages=$(grep -v -e '^$' -e '^#' "$file")
+    if [[ -z "$packages" ]]; then
+        echo "Have'n files to install in $file."
+        return
+    fi
+
+    echo "$packages" | xargs -n 1 -P $PARALLER_COUNT sudo pacman -Sw --noconfirm --needed
+
+    sudo pacman -S --noconfirm --needed $packages
+}
+
+#sudo pacman -Sy
 
 if [["#$packs_choice" == "a"]]; then
-	pacman -S --noconfirm $BASEPACKAGES
+	install_packages "packs/base.packs"
+	install_packages "packs/start.packs"
 else
-	pacman -S --noconfirm $BASEPACKAGES
-	pacman -S --noconfirm $STARTPACKAGES
+	install_packages "packs/base.packs"
+fi
+
+home_path="/home/user"
+
 
 cd /home/user
-mkdir programing app picture system
+sudo -u $SUDO_USER mkdir programing app picture system
 cd picture
-mkdir wallpaper
+sudo -u $SUDO_USER mkdir wallpaper
 
 cd /home/user/system
-git clone https://git.suckless.org/dwm
-git clone https://github.com/torrinfail/dwmblocks.git
+sudo -u $SUDO_USER git clone https://git.suckless.org/dwm
+sudo -u $SUDO_USER git clone https://github.com/torrinfail/dwmblocks.git
 
-cp config.h /home/user/system/dwm/config.h
+sudo -u $SUDO_USER cp /home/user/config.h /home/user/system/dwm/config.h
 
 cd /home/user/system/dwm
-make
 sudo make install
 
 cd /home/user/system/dwmblocks
-sudo make
 sudo make install
 
-cp home/user/xinitrc /home/user/.xinitrc
-cp home/user/startdwm.sh /home/user/.startdwm.sh
-cd /home/user
-chmod +x .startdwm.sh
+sudo -u $SUDO_USER cp home/user/internal/xinitrc /home/user/.xinitrc
+sudo -u $SUDO_USER cp home/user/internal/startdwm.sh /home/user/.startdwm.sh
 
-curl -o home/user/picture/wallpaperwall.jpg https://ic.pics.livejournal.com/pantsu_squad/60334932/1436863/1436863_original.jpg
+cd /home/user
+sudo -u $SUDO_USER chmod +x .startdwm.sh
+
+curl -o home/user/picture/wallpaperwall/wall.jpg https://ic.pics.livejournal.com/pantsu_squad/60334932/1436863/1436863_original.jpg
