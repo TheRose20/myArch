@@ -90,5 +90,5 @@ sudo -u $SUDO_USER cp -r /home/user/internal/config/nvim /home/user/.config/
 sudo -u $SUDO_USER ${home_path}/internal/url_test.sh
 
 #ohmyzsh
-#sudo -u $SUDO_USER sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-sudo -u $SUDO_USER yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sudo -u $SUDO_USER sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+#sudo -u $SUDO_USER yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
