@@ -59,8 +59,8 @@ arch-chroot /mnt bash -c "
   systemctl enable NetworkManager
 "
 
-cp -r /root/internal /mnt/home/user
-cp -r /root /mnt/root
+cp -r /root/myArch/internal /mnt/home/user
+cp -r /root/ /mnt/root
 
 chmod -R 777 /mnt/home/user/internal
 

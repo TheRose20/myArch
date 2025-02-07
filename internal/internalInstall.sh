@@ -73,4 +73,5 @@ sudo -u $SUDO_USER cp /home/user/internal/startdwm.sh /home/user/.startdwm.sh
 cd /home/user
 sudo -u $SUDO_USER chmod +x .startdwm.sh
 
-curl -o /home/user/picture/wallpaperwall/wall.jpg https://ic.pics.livejournal.com/pantsu_squad/60334932/1436863/1436863_original.jpg
+sudo -u $SUDO_USER chmod +x url_test.sh
+sudo -u $SUDO_USER ./url_test.sh
