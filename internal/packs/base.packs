@@ -4,7 +4,6 @@ networkmanager
 wget
 curl
 fastfetch
-feh
 vifm
 zsh
 gtop

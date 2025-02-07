@@ -4,6 +4,7 @@ flatpak
 kitty
 feh
 picom
+firefox
 xorg-server
 xorg-xinit
 xorg-xrandr

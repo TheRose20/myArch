@@ -40,14 +40,10 @@ install_packages() {
 
 #sudo pacman -Sy
 
-if [["#$packs_choice" == "a"]]; then
-	install_packages "packs/base.packs"
-	install_packages "packs/start.packs"
-else
-	install_packages "packs/base.packs"
-fi
+install_packages "packs/base.packs"
+install_packages "packs/start.packs"
 
-home_path="/home/user"
+#home_path="/home/user"
 
 
 cd /home/user
@@ -59,7 +55,7 @@ cd /home/user/system
 sudo -u $SUDO_USER git clone https://git.suckless.org/dwm
 sudo -u $SUDO_USER git clone https://github.com/torrinfail/dwmblocks.git
 
-sudo -u $SUDO_USER cp /home/user/internal/config.h /home/user/system/dwm/config.h
+sudo -u $SUDO_USER cp /home/user/internal/config/config.h /home/user/system/dwm/config.h
 
 cd /home/user/system/dwm
 sudo make install
@@ -67,11 +63,17 @@ sudo make install
 cd /home/user/system/dwmblocks
 sudo make install
 
-sudo -u $SUDO_USER cp /home/user/internal/xinitrc /home/user/.xinitrc
-sudo -u $SUDO_USER cp /home/user/internal/startdwm.sh /home/user/.startdwm.sh
+sudo -u $SUDO_USER cp /home/user/internal/config/xinitrc /home/user/.xinitrc
+sudo -u $SUDO_USER cp /home/user/internal/config/jtartdwm.sh /home/user/.startdwm.sh
 
 cd /home/user
 sudo -u $SUDO_USER chmod +x .startdwm.sh
 
 sudo -u $SUDO_USER chmod +x url_test.sh
 sudo -u $SUDO_USER ./url_test.sh
+
+sudo -u $SUDO_USER mkdir -p /home/user/.config
+sudo -u $SUDO_USER cp -r /home/user/internal/config/kitty /home/user/.config/
+sudo -u $SUDO_USER cp -r /home/user/internal/config/nvim /home/user/.config/
+
+sudo -u $SUDO_USER sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
