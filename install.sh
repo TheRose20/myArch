@@ -15,7 +15,7 @@ HOSTNAME=${HOSTNAME:-archlinux}
 USERNAME=${USERNAME:-user}
 
 PACMAN_CONF="/etc/pacman.conf"
-PARALLEL_DOWNLOADS=30
+PARALLEL_DOWNLOADS=15
 
 sed -i "s/^#ParallelDownloads = [0-50]*/ParallelDownloads = $PARALLEL_DOWNLOADS/" "$PACMAN_CONF"
 sed -i "s/^#Color/Color/" "$PACMAN_CONF"
@@ -35,6 +35,8 @@ sgdisk -n 0:0:0 -t 0:8300 -c 0:Linux "$DISK"
 
 mkfs.ext4 "${DISK}2"
 mount "${DISK}2" /mnt
+
+systemctl start reflector.service
 
 pacstrap /mnt base linux linux-firmware base-devel zsh networkmanager grub 
 

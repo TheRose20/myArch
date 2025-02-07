@@ -44,12 +44,12 @@ install_packages() {
     sudo pacman -S --noconfirm --needed $packages
 }
 
-#sudo pacman -Sy
+sudo pacman -Sy
 
 install_packages "packs/base.packs"
 install_packages "packs/start.packs"
 
-#home_path="/home/user"
+home_path="/home/user"
 
 #Base home dirictores
 cd /home/user
