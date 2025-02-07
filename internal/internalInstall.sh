@@ -16,6 +16,12 @@ while true; do
     fi
 done
 
+PACMAN_CONF="/etc/pacman.conf"
+PARALLEL_DOWNLOADS=8
+
+sed -i "s/^#ParallelDownloads = [0-50]*/ParallelDownloads = $PARALLEL_DOWNLOADS/" "$PACMAN_CONF"
+sed -i "s/^#Color/Color/" "$PACMAN_CONF"
+
 
 
 PARALLER_COUNT=6
