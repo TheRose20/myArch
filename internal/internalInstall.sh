@@ -73,7 +73,7 @@ sudo make install
 
 #startdwm copy
 sudo -u $SUDO_USER cp /home/user/internal/config/xinitrc /home/user/.xinitrc
-sudo -u $SUDO_USER cp /home/user/internal/config/jtartdwm.sh /home/user/.startdwm.sh
+sudo -u $SUDO_USER cp /home/user/internal/config/startdwm.sh /home/user/.startdwm.sh
 
 cd /home/user
 sudo -u $SUDO_USER chmod +x .startdwm.sh
