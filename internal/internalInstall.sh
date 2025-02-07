@@ -45,24 +45,27 @@ install_packages "packs/start.packs"
 
 #home_path="/home/user"
 
-
+#Base home dirictores
 cd /home/user
 sudo -u $SUDO_USER mkdir programing app picture system
 cd picture
 sudo -u $SUDO_USER mkdir wallpaper
 
+#git clone dwm and blocks
 cd /home/user/system
 sudo -u $SUDO_USER git clone https://git.suckless.org/dwm
 sudo -u $SUDO_USER git clone https://github.com/torrinfail/dwmblocks.git
 
 sudo -u $SUDO_USER cp /home/user/internal/config/config.h /home/user/system/dwm/config.h
 
+#Install dwm
 cd /home/user/system/dwm
 sudo make install
 
 cd /home/user/system/dwmblocks
 sudo make install
 
+#startdwm copy
 sudo -u $SUDO_USER cp /home/user/internal/config/xinitrc /home/user/.xinitrc
 sudo -u $SUDO_USER cp /home/user/internal/config/jtartdwm.sh /home/user/.startdwm.sh
 
@@ -72,8 +75,14 @@ sudo -u $SUDO_USER chmod +x .startdwm.sh
 sudo -u $SUDO_USER chmod +x url_test.sh
 sudo -u $SUDO_USER ./url_test.sh
 
+#other configs copy
 sudo -u $SUDO_USER mkdir -p /home/user/.config
 sudo -u $SUDO_USER cp -r /home/user/internal/config/kitty /home/user/.config/
 sudo -u $SUDO_USER cp -r /home/user/internal/config/nvim /home/user/.config/
 
-sudo -u $SUDO_USER sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+#Wallpaper install
+sudo -u $SUDO_USER ${home_path}/internal/url_test.sh
+
+#ohmyzsh
+#sudo -u $SUDO_USER sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sudo -u $SUDO_USER yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
