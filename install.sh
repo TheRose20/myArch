@@ -66,5 +66,9 @@ cp -r /root/ /mnt/root
 
 chmod -R 777 /mnt/home/user/internal
 
-#umount -R /mnt
+umount -R /mnt
+enject /dev/sr0
+
 echo "Installation complete! Reboot to enjoy your new system."
+
+reboot
