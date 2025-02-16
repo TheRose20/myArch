@@ -39,6 +39,8 @@ static const Rule rules[] = {
 
 	{ "qbittorrent",           NULL,       NULL,       0,            1,           -1 },
 	{ "Thunar",                NULL,       NULL,       0,            1,           -1 },
+	{ "feh",                   NULL,       NULL,       0,            1,           -1 },
+	
 };
 
 /* layout(s) */
@@ -100,10 +102,10 @@ static const Key keys[] = {
 
 	{ 0,                            XK_Print,  spawn,          SHCMD("flameshot gui")                },
 
-	{ 0,                            XK_F11,    spawn,          SHCMD("pactl set-sink-volume 0 +3%")  },
-	{ 0,                            XK_F10,    spawn,          SHCMD("pactl set-sink-volume 0 -3%")  },
-	{ 0,                            XK_F12,    spawn,          SHCMD("pactl set-sink-mute 0 toggle") },
-	{ 0,                            XK_F9,  	 spawn,          SHCMD("pavucontrol")  },
+	{ 0,                            XF86XK_AudioRaiseVolume,    spawn,          SHCMD("pactl set-sink-volume 0 +3%")  },
+	{ 0,                            XF86XK_AudioLowerVolume,    spawn,          SHCMD("pactl set-sink-volume 0 -3%")  },
+	{ 0,                            XF86XK_AudioMute,           spawn,          SHCMD("pactl set-sink-mute 0 toggle") },
+	{ 0,                            XF86XK_Tools,		         	 spawn,          SHCMD("pavucontrol")  },
 	
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)

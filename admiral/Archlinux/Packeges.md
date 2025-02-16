@@ -5,6 +5,7 @@
 - xorg-server
 - xorg-xinit
 - xorg-xrandr
+- xorg-xev  (Клавиши)
 
 ## pacman path
 ### config
