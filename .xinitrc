@@ -1,1 +1,0 @@
-exec ./.startdwm.sh
