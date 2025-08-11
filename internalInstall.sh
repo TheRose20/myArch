@@ -45,7 +45,7 @@ PARALLER_COUNT=6
 install_packages() {
 	local file=$1
 	if [[ ! -f "$file" ]]; then
-			echo "Файл $file не найден!"
+			echo "File $file not found!"
 			exit 1
 	fi
 
