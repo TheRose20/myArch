@@ -1,7 +1,9 @@
 #!/bin/bash
 
 HOME_PATH="/home/user"
+CONFIG_PATH="/home/user/myArch/configs"
 
+#rewrite to saing password
 if [ "$(id -u)" -ne 0 ]; then
   echo "Exitst script with sudo!"
   exit 1
@@ -63,49 +65,61 @@ install_packages() {
 
 function create_directories() {
 	#Base home dirictores
-	cd /home/user
-	sudo -u $SUDO_USER mkdir programing app picture system
+	cd "$HOME_PATH"
+	mkdir programing app picture system
 	cd picture
-	sudo -u $SUDO_USER mkdir wallpaper
+	mkdir wallpaper
 
 	#git clone dwm and blocks
-	cd /home/user/system
-	sudo -u $SUDO_USER git clone https://git.suckless.org/dwm
-	sudo -u $SUDO_USER git clone https://github.com/torrinfail/dwmblocks.git
+	#TODO remove to other function
+	cd $HOME_PATH/system
+	git clone https://git.suckless.org/dwm
+  git clone https://github.com/torrinfail/dwmblocks.git
 
-	sudo -u $SUDO_USER cp /home/user/internal/config/config.h /home/user/system/dwm/config.h
+	$CONFIG_PATH/dwm.h $HOME_PATH/system/dwm/config.h
+	$CONFIG_PATH/dwmblocks $HOME_PATH/system/dwmblocks/blocks.h
 }
 
 function dwm_installation() {
 
 	#Install dwm
-	cd /home/user/system/dwm
+	cd $HOME_PATH/system/dwm
 	sudo make install
 
-	cd /home/user/system/dwmblocks
+	cd $HOME_PATH/system/dwmblocks
 	sudo make install
 
 	#startdwm copy
-	sudo -u $SUDO_USER cp /home/user/internal/config/xinitrc /home/user/.xinitrc
-	sudo -u $SUDO_USER cp /home/user/internal/config/startdwm.sh /home/user/.startdwm.sh
+	cp $CONFIG_PATH/xinitrc $HOME_PATH/.xinitrc
+	cp $CONFIG_PATH/startdwm.sh $HOME_PATH/.startdwm.sh
 
-	cd /home/user
-	sudo -u $SUDO_USER chmod +x .startdwm.sh
+	cd $HOME_PATH
+	chmod +x .startdwm.sh
 
 }
 
 function other_install() {
 	#other configs copy
-	sudo -u $SUDO_USER mkdir -p /home/user/.config
-	sudo -u $SUDO_USER cp -r /home/user/internal/config/kitty /home/user/.config/
-	sudo -u $SUDO_USER cp -r /home/user/internal/config/nvim /home/user/.config/
+	#TODO make function
+	mkdir -p $HOME_PATH/.config
+	mkdir -p $HOME_PATH/.config/kitty
+	mkdir -p $HOME_PATH/.config/nvim
+	mkdir -p $HOME_PATH/.config/vifm
+	mkdir -p $HOME_PATH/.config/cava
+
+	cp -r $CONFIG_PATH/kitty.conf $HOME_PATH/.config/kitty/kitty.conf
+	cp -r $CONFIG_PATH/music $HOME_PATH/.config/kitty/music
+	cp -r $CONFIG_PATH/nvim $HOME_PATH/.config/nvim/init.vim
+	cp -r $CONFIG_PATH/vifmrc $HOME_PATH/.config/vifm/vifmrc
+	cp -r $CONFIG_PATH/cava $HOME_PATH/.config/cava/cava
 
 	#Wallpaper install
-	sudo -u $SUDO_USER chmod +x url_test.sh
-	sudo -u $SUDO_USER home/user/internal/url_test.sh
+	cd $CONFIG_PATH../other/wallpaper.sh
+	chmod +x wallpaper.sh
+	./$CONFIG_PATH../other/wallpaper.sh
 
 	#ohmyzsh
-	sudo -u $SUDO_USER sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 	#sudo -u $SUDO_USER yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 }
 
@@ -116,7 +130,7 @@ function main() {
 
 	install_packages "packs/base.packs"
 	install_packages "packs/start.packs"
-	install_packages "packs/virtual.packs"
+	#install_packages "packs/virtual.packs"
 	
 	create_directories
 	dwm_installation

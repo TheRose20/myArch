@@ -6,6 +6,7 @@ xrandr --output Virtual-1 --mode 1920x1080
 setxkbmap us,ru -option 'grp:caps_toggle'
 
 #Wallpaper
+#TODO change to user name
 feh --bg-fill --randomize /home/user/picture/wallpaper
 
 #Opacity terminal
