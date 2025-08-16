@@ -1,0 +1,7 @@
+layout tall
+cd ~
+launch cmus
+launch cava
+launch tty-clock -C 4 -c
+
+enabled_layouts tall, vertical, horizontal
